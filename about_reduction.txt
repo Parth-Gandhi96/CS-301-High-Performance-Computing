@@ -1,0 +1,22 @@
+ For Reduction to be applicable, the operation must be:
+ 	1) Binary Operation
+ 	2) Must have Identity Element (e.g, 1 for *, 0 for + etc.)
+ 	3) Associative (e.g, a+b=b+a - not for floating point)
+
+ Reduction is Not 100% serial Or Parallel
+ it is combination of both
+
+(we will take the example of, "sum of all n elemnts of array - a[n]".)
+
+ One way of implementing it ca be:-
+ 	-Use array with number of element equels to number of threads
+ 		sharedArr[omp_get_max_threads()]
+ 	-each thread will only changes at the index equel to its id,
+ 		sharedArr[omp_get_thread_num()]
+ 	-after this all done - execution of each thread then, sum all the element of sharedArr using binary Method.
+	Problem:-
+ 		But here is the problem of catch, How compiler gives data from catch when thread askes to update element then each time whole catch will give whole data So it will slow down the program. (And also remember the Array is in shared memory which is slow)
+Another way (Correction in above):-
+	- We just have problem with shared array to get updated each time, then make local variables for each thread (i.e; mySum) So it will be stored in cache of each processor. After the exection finishes that local variable (mySum) of all will give its value to shared array.
+	Then do as we were doing before (Sum using binary Method).
+	
